@@ -1,0 +1,4 @@
+[build]
+  base = "home"                     # The directory containing your React app
+  publish = "home/build"             # The directory to publish after the build
+  command = "npm install && npm run build"  # Install dependencies and build the app
