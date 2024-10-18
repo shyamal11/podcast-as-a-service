@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+import datetime
+import pytz
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'example'
+    'dashboard',
+    'news_sources',
+    'podcast_pipeline',
+    'upload_podcast'
 ]
 
 MIDDLEWARE = [
@@ -102,8 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -114,13 +116,31 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+if DEBUG:
+    STATIC_URL = '/static/'  
+    STATICFILES_DIRS = []
+else:
+    STATIC_URL = os.getenv('STATIC_URL')
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = os.getenv('STATIC_URL', '/static/')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+TEXT_MODEL = "gpt-4o"
+ 
+
+pdt = pytz.timezone('America/New_York')
+pdt_now = datetime.datetime.now(pdt)
+today = pdt_now.date()
+today_date = today.strftime('%Y-%m-%d')
+
+
+
+OUTPUT_DIRECTORY = os.path.join(BASE_DIR, 'output', today_date)
+
+os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
+
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+AZURE_SPEECH_KEY = os.environ.get("SPEECH_KEY") 
+AZURE_REGION = os.environ.get("SPEECH_REGION")

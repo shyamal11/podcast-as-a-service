@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Django: Test home",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/manage.py",  // Path to manage.py
+        "args": [
+          "test",
+          "dashboard"  // Replace 'home' with the name of your app
+        ],
+        "django": true,
+        "env": {
+          "DJANGO_SETTINGS_MODULE": "api.settings"  // Replace 'your_project' with your project's name
+        },
+        "console": "integratedTerminal",  // Use the integrated terminal for output
+        "justMyCode": true
+      }
+    ]
+  }
+  
